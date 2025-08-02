@@ -46,6 +46,7 @@ end
     POST /ap1/v1/orders/
 ```
 
+
 ```ruby
     class  Api::V1::OrdersController < ApiController
        def create
@@ -113,7 +114,7 @@ Será desenvolvido uma nova integração entre o assas em vez da pagar-me, nessa
 
 ### Desenvolvimento da solucação
 
-1. `Gateway::AssasService
+1. `Gateway::AssasService`
 ```ruby
 class Gateway::AssasService
     # Service para chamar o gateway de cobranco no caso o pagar-me
