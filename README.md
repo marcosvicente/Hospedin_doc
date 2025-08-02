@@ -46,7 +46,6 @@ end
     POST /ap1/v1/orders/
 ```
 
-
 ```ruby
     class  Api::V1::OrdersController < ApiController
        def create
@@ -79,7 +78,6 @@ class Order::CreateService
 end
 ```
 
-
 ```ruby
 class Charge::CreateService
   def initialize(product:, user:  )
@@ -96,7 +94,7 @@ end
 
 
 ### Solução Prosposta
-Será desenvolvido uma nova integração entre o assas em vez da pagar-me, nessa integração será necessario fazer uma mudanças no sistemas. Primeiramente testarem em producão com alguns usuarios somente, depois da faze de teste, todos usuarios utilizaram o gateway do assas.
+Será desenvolvido uma nova integração entre o assas em vez da pagar-me, nessa integração será necessario fazer uma mudanças no sistemas. Primeiramente testarem em producão com alguns usuarios somente, depois da fase de teste, todos usuarios utilizaram o gateway do assas.
 
 #### Info
 - Todo o codigo novo tem que ter 100% de cobertura de teste, e o assas tem que ter mocks
