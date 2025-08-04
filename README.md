@@ -1,16 +1,15 @@
 # Teste tecnico
 
 ### Arquitetura basica
-Essa a arquitetura basica que provalvemente ja esta desenvolvida
+Essa a arquitetura basica que provalvemente o ja está desenvolvida
 
 #### Modelos
-Modelo responsavel para genrenciar a order(compra)
+Modelo responsável para gerenciar a order(compra)
 ```ruby
     class Order < ApplicationRecord
         belongs_to: user
         belongs_to :store
         belongs_to :product
-        belongs_to :gateway
 
         enum payment_method: {
             credit_card: 0,
@@ -34,7 +33,7 @@ Modelo responsavel para genrenciar a order(compra)
     end
 ```
 
-Model responsavel para salvar dados do gateway como um todo
+Model responsável para salvar dados do gateway como um todo
 
 ```ruby
 class Gateway < ApplicationRecord
@@ -96,16 +95,19 @@ end
 ### Solução Prosposta
 Será desenvolvido uma nova integração entre o assas em vez da pagar-me, nessa integração será necessario fazer uma mudanças no sistemas. Primeiramente testarem em producão com alguns usuarios somente, depois da fase de teste, todos usuarios utilizaram o gateway do assas.
 
-#### Info
+#### Requesitos necessários
 - Todo o codigo novo tem que ter 100% de cobertura de teste, e o assas tem que ter mocks
+- O script terá que ser documentado como testar
+- Tem que ser documentado o que foi feito
 
 #### Urls uteis
 - Doc Assas - https://github.com/marcosgugs/asaas-ruby
 - find_in_batches - https://apidock.com/rails/ActiveRecord/Batches/find_in_batches
+- Service Object - 
 
 #### Passos para desenvolver
-1. Criar service `Gateway::AssasService`, que sera responsavel pelo integração com o assas
-2. Adicionar no modelo `Gateway` no `enum` `gateway_name` o enum do assas
+1. Criar um service `Gateway::AssasService`, que será responsável pelo integração com o assas
+2. Adicionar no model `Gateway`  e no `enum` `gateway_name` o enum do assas
 3. Criar uma `migration`, onde  irá adicionar uma **chave estrageira**, com qual e o gateway que o usuario ira fazer o pagamento. **Importante** Os novos usuários irão utilizar o assas como padrão, somente depois que o periodo de teste acabar
 4. Criar dentro do `Charge::CreateService` uma condição onde pode validar qual e o gateway que ira cuidar do pagamento.
 5. Criar um script com em batchs para criar a mudança do gateway
@@ -136,7 +138,7 @@ end
 
 ```
 
-4.`Charge::CreateService` colocar uma condicão qual e o gateway
+4.`Charge::CreateService` colocar uma condição qual é o gateway
 ```ruby
 class Charge::CreateService
   def initialize(product:, user:  )
@@ -156,7 +158,8 @@ end
 ```
 
 5. Criação do script
-Aqui podesse criar um  service com o job(sidekiq). Isso será rodado pelo TL, porem tem ser testado com dados de teste antes.
+
+Aqui podesse criar um  service com o job(sidekiq). Isso será rodado pelo TL, porem tem ser testado com dados de teste antes. Olhar o link que pode ajudar.
 
 ```ruby
 class Scripts::ChangeGatewayService
@@ -172,7 +175,6 @@ class Scripts::ChangeGatewayServiceJob < ApplicationJob
   def perform(size)
     User.joins(:gateway).where.not(gateways: { gateway_name: 'pagar_me' }).find_in_batches(start: start, finish: finish, batch_size: size) do |users|
       ActiveRecord::Base.transaction do
-        # Update 1000 records at once
         users.each do |user|
             user.gateway.update(gateway_name: 'assas')
         end
