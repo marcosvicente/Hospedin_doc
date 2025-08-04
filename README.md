@@ -103,7 +103,7 @@ Será desenvolvido uma nova integração entre o assas em vez da pagar-me, nessa
 #### Urls uteis
 - Doc Assas - https://github.com/marcosgugs/asaas-ruby
 - find_in_batches - https://apidock.com/rails/ActiveRecord/Batches/find_in_batches
-- Service Object - 
+- Service Object - https://medium.com/nyc-ruby-on-rails/design-patterns-in-ruby-on-rails-service-objects-a90bf9178689
 
 #### Passos para desenvolver
 1. Criar um service `Gateway::AssasService`, que será responsável pelo integração com o assas
